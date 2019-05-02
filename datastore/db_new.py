@@ -65,18 +65,17 @@ class SqlalchemyDatabase(object):
         return package
 
     def restore_pack(self, name):
-        pack_from_db = session.query(Packages).filter_by(name=name).first()
-        pack = pk.Description(pack_from_db.name, pack_from_db.description, pack_from_db.repo, pack_from_db.eco)
-        return pack
+        pack = session.query(Packages).filter_by(name=name).first()
+        return pk.Description(pack.name, pack.description, pack.repo, pack.eco)
 
     def restore_pack_with_eco(self, eco):
         ecoObj = session.query(Ecosystem).filter_by(jmeno=eco).first()
         ecoId = ecoObj.id
         packs_from_db = session.query(Packages).filter_by(eco_id=ecoId).all()
         packs = []
-        for pack_from_db in packs_from_db:
-            pack = pk.Description(pack_from_db.name, pack_from_db.description, pack_from_db.repo, pack_from_db.eco)
-            packs.append(pack)
+        for pack in packs_from_db:
+            package = pk.Description(pack.name, pack.description, pack.repo, pack.eco)
+            packs.append(package)
         return packs
 
     def restore_ver(self, version):
@@ -89,9 +88,9 @@ class SqlalchemyDatabase(object):
         packName = packObj.name
         vers_from_db = session.query(Versions).filter_by(package=packName).all()
         vers = []
-        for ver_from_db in vers_from_db:
-            ver = pk.Version(ver_from_db.version, ver_from_db.package)
-            vers.append(ver)
+        for ver in vers_from_db:
+            version = pk.Version(ver.version, ver.package)
+            vers.append(version)
         return vers
 
 database = SqlalchemyDatabase("sqlite:///dbfile.db")
