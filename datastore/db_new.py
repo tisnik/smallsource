@@ -59,16 +59,45 @@ class SqlalchemyDatabase(object):
             session.add(package_in_db)
         session.commit()
 
-database = SqlalchemyDatabase("sqlite:///dbfile.db")
+    def restore_eco(self, jmeno):
+        eco_from_db = session.query(Ecosystem).filter_by(jmeno=jmeno).first()
+        package = pk.Package(eco_from_db.jmeno)
+        return package
 
-database.store(
-    *[pk.first_generation, pk.second_generation,
-    pk.base_bulbasaur, pk.base_charmander, pk.base_squirtle,
-    pk.bulbasaur, pk.ivysaur, pk.venusaur,
-    pk.charizard, pk.charmander, pk.charmeleon,
-    pk.squirtle, pk.wartortle, pk.blastoise,
-    pk.base_chikorita, pk.base_cynduaquil, pk.base_totodile,
-    pk.chikorita, pk.bayleef, pk.meganium,
-    pk.cynduaquil, pk.quilava, pk.typhlosion,
-    pk.totodile, pk.crononaw, pk.feraligatr]
-)
+    def restore_pack(self, name):
+        pack_from_db = session.query(Packages).filter_by(name=name).first()
+        pack = pk.Description(pack_from_db.name, pack_from_db.description, pack_from_db.repo, pack_from_db.eco)
+        return pack
+
+    def restore_pack_with_eco(self, eco):
+        ecoObj = session.query(Ecosystem).filter_by(jmeno=eco).first()
+        ecoId = ecoObj.id
+        packs_from_db = session.query(Packages).filter_by(eco_id=ecoId).all()
+        packs = []
+        for pack_from_db in packs_from_db:
+            pack = pk.Description(pack_from_db.name, pack_from_db.description, pack_from_db.repo, pack_from_db.eco)
+            packs.append(pack)
+        return packs
+
+    def restore_ver(self, version):
+        ver_from_db = session.query(Versions).filter_by(version=version).first()
+        ver = pk.Version(ver_from_db.version, ver_from_db.package)
+        return ver
+
+    def restore_ver_with_pack(self, pack):
+        packObj = session.query(Packages).filter_by(name=pack).first()
+        packName = packObj.name
+        vers_from_db = session.query(Versions).filter_by(package=packName).all()
+        vers = []
+        for ver_from_db in vers_from_db:
+            ver = pk.Version(ver_from_db.version, ver_from_db.package)
+            vers.append(ver)
+        return vers
+
+database = SqlalchemyDatabase("sqlite:///dbfile.db")
+session = database.Session()
+print(database.restore_eco('First Generation'))
+for i in database.restore_pack_with_eco('First Generation'):
+    print(i)
+for i in database.restore_ver_with_pack('Bulbasaur'):
+    print(i)
