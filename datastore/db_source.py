@@ -31,7 +31,7 @@ class Versions(Base):
     version = sqla.Column(sqla.String)
     package = sqla.Column(sqla.String, sqla.ForeignKey('packages.name'))
 
-
+    
 class SqlalchemyDatabase(object):
     def __init__(self, backend):
         engine = sqla.create_engine(backend, echo=False)
@@ -40,12 +40,15 @@ class SqlalchemyDatabase(object):
         session = self.Session()
 
     def store(self, *args):
+
         # TODO: check if item exists first
+
         session = self.Session()
         for package in args:
             package_to_dict = package.to_dict()
 
             # TODO: excepts for bad args
+
             if 'eco' in package_to_dict:
                 eco = session.query(Ecosystem).filter_by(jmeno=package_to_dict['eco']).first()
                 package_to_dict['eco'] = eco
@@ -59,6 +62,7 @@ class SqlalchemyDatabase(object):
 
             session.add(package_in_db)
         session.commit()
+
 
 # TODO: add excepts for bad args
     def restore_from_table(self, arg, table):
