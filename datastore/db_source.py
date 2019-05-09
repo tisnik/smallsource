@@ -2,7 +2,7 @@ import sqlalchemy as sqla
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 
-import datastore.packageclass as pk
+import datastore.db_packages as pk
 
 metadata = sqla.MetaData()
 Base = declarative_base()
@@ -31,8 +31,7 @@ class Versions(Base):
     version = sqla.Column(sqla.String)
     package = sqla.Column(sqla.String, sqla.ForeignKey('packages.name'))
 
-
-
+    
 class SqlalchemyDatabase(object):
     def __init__(self, backend):
         engine = sqla.create_engine(backend, echo=False)
@@ -41,9 +40,14 @@ class SqlalchemyDatabase(object):
         session = self.Session()
 
     def store(self, *args):
+
+        # TODO: check if item exists first
+
         session = self.Session()
         for package in args:
             package_to_dict = package.to_dict()
+
+            # TODO: excepts for bad args
 
             if 'eco' in package_to_dict:
                 eco = session.query(Ecosystem).filter_by(jmeno=package_to_dict['eco']).first()
@@ -59,44 +63,42 @@ class SqlalchemyDatabase(object):
             session.add(package_in_db)
         session.commit()
 
-    def restore_eco(self, jmeno):
-        eco_from_db = session.query(Ecosystem).filter_by(jmeno=jmeno).first()
-        package = pk.Package(eco_from_db.jmeno)
+
+# TODO: add excepts for bad args
+    def restore_from_table(self, arg, table):
+        session = self.Session()
+        if table.title() == 'Ecosystem':
+            eco = session.query(Ecosystem).filter_by(jmeno=arg).first()
+            package = pk.Package(eco.jmeno)
+        elif table.title() == 'Packages':
+            pack = session.query(Packages).filter_by(name=arg).first()
+            package = pk.Description(pack.name, pack.description, pack.repo, pack.eco)
+        elif table.title() == 'Versions':
+            ver = session.query(Versions).filter_by(version=arg).first()
+            package = pk.Version(ver.version, ver.package)
         return package
 
-    def restore_pack(self, name):
-        pack = session.query(Packages).filter_by(name=name).first()
-        return pk.Description(pack.name, pack.description, pack.repo, pack.eco)
+    def restore_from_master(self, arg, table):
+        session = self.Session()
+        packages = []
+        if table.title() == 'Ecosystem':
+            object = session.query(Ecosystem).filter_by(jmeno=arg).first()
+            id = object.id
+            packs_from_db = session.query(Packages).filter_by(eco_id=id).all()
+            for pack in packs_from_db:
+                package = pk.Description(pack.name, pack.description, pack.repo, pack.eco)
+                packages.append(package)
+        elif table.title() == 'Packages':
+            packObj = session.query(Packages).filter_by(name=arg).first()
+            packName = packObj.name
+            vers = session.query(Versions).filter_by(package=packName).all()
+            for ver in vers:
+                version = pk.Version(ver.version, ver.package)
+                packages.append(version)
+        return packages
 
-    def restore_pack_with_eco(self, eco):
-        ecoObj = session.query(Ecosystem).filter_by(jmeno=eco).first()
-        ecoId = ecoObj.id
-        packs_from_db = session.query(Packages).filter_by(eco_id=ecoId).all()
-        packs = []
-        for pack in packs_from_db:
-            package = pk.Description(pack.name, pack.description, pack.repo, pack.eco)
-            packs.append(package)
-        return packs
+    # TODO: search in database (arg - name and column)
 
-    def restore_ver(self, version):
-        ver_from_db = session.query(Versions).filter_by(version=version).first()
-        ver = pk.Version(ver_from_db.version, ver_from_db.package)
-        return ver
-
-    def restore_ver_with_pack(self, pack):
-        packObj = session.query(Packages).filter_by(name=pack).first()
-        packName = packObj.name
-        vers_from_db = session.query(Versions).filter_by(package=packName).all()
-        vers = []
-        for ver in vers_from_db:
-            version = pk.Version(ver.version, ver.package)
-            vers.append(version)
-        return vers
 
 database = SqlalchemyDatabase("sqlite:///dbfile.db")
 session = database.Session()
-print(database.restore_eco('First Generation'))
-for i in database.restore_pack_with_eco('First Generation'):
-    print(i)
-for i in database.restore_ver_with_pack('Bulbasaur'):
-    print(i)
