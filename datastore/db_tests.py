@@ -1,6 +1,10 @@
 import datastore.db_packages as pk
 import datastore.db_source as code
 
+database = code.SqlalchemyDatabase("sqlite:///dbfile.db")
+session = database.Session()
+
+
 
 first_generation = pk.Package('First Generation')
 
@@ -42,11 +46,20 @@ pokemons = [base_bulbasaur, base_charmander, base_squirtle, base_chikorita, base
 evolutions = [bulbasaur, ivysaur, venusaur, charmander, charmeleon, charizard, squirtle, wartortle, blastoise,
               chikorita, bayleef, meganium, cynduaquil, quilava, typhlosion, totodile, crononaw, feraligatr]
 
-code.database.store(*generations)
-code.database.store(*pokemons)
-code.database.store(*evolutions)
-    # TODO: bad add
+database.store(*generations)
+database.store(*pokemons)
+database.store(*evolutions)
+database.store(bulbasaur)
+database.store('ananas')
 
-code.database.restore_from_table('first generation', 'ecosystem')
-code.database.restore_from_master('second generation', 'ecosystem')
-    # TODO: bad restore
+print(database.restore_from_table('First Generation', 'Ecosystem'))
+print(database.restore_from_table('Asas', 'Ecosystem'))
+print(database.restore_from_table('First Generation', 'Asas'))
+
+print()
+
+for i in database.restore_from_master('Second Generation', 'Ecosystem'):
+    print(i)
+
+print(database.restore_from_master('Asas', 'Ecosystem'))
+print(database.restore_from_master('First Generation', 'Asas'))
