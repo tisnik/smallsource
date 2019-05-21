@@ -44,56 +44,58 @@ class SqlalchemyDatabase(object):
         session = self.Session()
         for package in args:
             package_to_dict = package.to_dict()
-
             # TODO: excepts for bad args
             if 'eco' in package_to_dict:
-                eco = session.query(Ecosystem).filter_by(jmeno=package_to_dict['eco']).first()
-                package_to_dict['eco'] = eco
-                package_in_db = Packages(** package_to_dict)
+                exists = self.restore_from_table(package_to_dict['name'], 'packages')
+                if exists == None:
+                    eco = session.query(Ecosystem).filter_by(jmeno=package_to_dict['eco']).first()
+                    package_to_dict['eco'] = eco
+                    package_in_db = Packages(** package_to_dict)
             elif 'pack' in package_to_dict:
-                pack = session.query(Packages).filter_by(name=package_to_dict['pack']).first()
-                package_to_dict['pack'] = pack
-                package_in_db = Versions(** package_to_dict)
+                exists = self.restore_from_table(package_to_dict['version'], 'versions')
+                if exists == None:
+                    pack = session.query(Packages).filter_by(name=package_to_dict['pack']).first()
+                    package_to_dict['pack'] = pack
+                    package_in_db = Versions(** package_to_dict)
             else:
-                package_in_db = Ecosystem(** package_to_dict)
-
+                exists = self.restore_from_table(package_to_dict['jmeno'], 'ecosystem')
+                if exists == None:
+                    package_in_db = Ecosystem(** package_to_dict)
             session.add(package_in_db)
         session.commit()
 
 # TODO: add excepts for bad args
-    def restore_from_table(self, arg, table):
+    def restore_from_table(self, name, table):
         session = self.Session()
         if table.title() == 'Ecosystem':
-            eco = session.query(Ecosystem).filter_by(jmeno=arg).first()
+            eco = session.query(Ecosystem).filter_by(jmeno=name).first()
             package = pk.Package(eco.jmeno)
         elif table.title() == 'Packages':
-            pack = session.query(Packages).filter_by(name=arg).first()
+            pack = session.query(Packages).filter_by(name=name).first()
             package = pk.Description(pack.name, pack.description, pack.repo, pack.eco)
         elif table.title() == 'Versions':
-            ver = session.query(Versions).filter_by(version=arg).first()
+            ver = session.query(Versions).filter_by(version=name).first()
             package = pk.Version(ver.version, ver.package)
         return package
 
-    def restore_from_master(self, arg, table):
+    def restore_from_master(self, name, master_table):
         session = self.Session()
         packages = []
-        if table.title() == 'Ecosystem':
-            object = session.query(Ecosystem).filter_by(jmeno=arg).first()
-            id = object.id
+        if master_table.title() == 'Ecosystem':
+            package = session.query(Ecosystem).filter_by(jmeno=name).first()
+            id = package.id
             packs_from_db = session.query(Packages).filter_by(eco_id=id).all()
             for pack in packs_from_db:
                 package = pk.Description(pack.name, pack.description, pack.repo, pack.eco)
                 packages.append(package)
-        elif table.title() == 'Packages':
-            packObj = session.query(Packages).filter_by(name=arg).first()
-            packName = packObj.name
-            vers = session.query(Versions).filter_by(package=packName).all()
+        elif master_table.title() == 'Packages':
+            package = session.query(Packages).filter_by(name=name).first()
+            name = package.name
+            vers = session.query(Versions).filter_by(package=name).all()
             for ver in vers:
                 version = pk.Version(ver.version, ver.package)
                 packages.append(version)
         return packages
-
-    # TODO: search in database (arg - name and column)
 
 
 database = SqlalchemyDatabase("sqlite:///dbfile.db")
