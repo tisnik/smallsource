@@ -7,13 +7,13 @@ class Package(object):
 
     def to_dict(self):
         dictionary = dict()
-        dictionary["jmeno"] = self.jmeno
+        dictionary["name"] = self.jmeno
         return dictionary
 
     @staticmethod
     def from_dict(dict):
         dictionary = dict
-        result = Package(dictionary['jmeno'])
+        result = Package(dictionary['name'])
         return result
 
 

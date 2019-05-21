@@ -11,7 +11,7 @@ Base = declarative_base()
 class Ecosystem(Base):
     __tablename__ = 'ecosystem'
     id = sqla.Column(sqla.Integer, primary_key=True)
-    jmeno = sqla.Column(sqla.String)
+    name = sqla.Column(sqla.String)
     packages = relationship('Packages', backref='eco')
 
 
@@ -48,7 +48,7 @@ class SqlalchemyDatabase(object):
                 if 'eco' in package_to_dict:
                     exists = self.restore_from_table(package_to_dict['name'], 'packages')
                     if exists is None:
-                        eco = session.query(Ecosystem).filter_by(jmeno=package_to_dict['eco']).first()
+                        eco = session.query(Ecosystem).filter_by(name=package_to_dict['eco']).first()
                         package_to_dict['eco'] = eco
                         package_in_db = Packages(** package_to_dict)
                         print(package_to_dict)
@@ -58,8 +58,8 @@ class SqlalchemyDatabase(object):
                         pack = session.query(Packages).filter_by(name=package_to_dict['pack']).first()
                         package_to_dict['pack'] = pack
                         package_in_db = Versions(** package_to_dict)
-                elif 'jmeno' in package_to_dict:
-                    exists = self.restore_from_table(package_to_dict['jmeno'], 'ecosystem')
+                elif 'name' in package_to_dict:
+                    exists = self.restore_from_table(package_to_dict['name'], 'ecosystem')
                     if exists is None:
                         package_in_db = Ecosystem(** package_to_dict)
                 else:
@@ -74,10 +74,10 @@ class SqlalchemyDatabase(object):
         session = self.Session()
         try:
             if table.title() == 'Ecosystem':
-                eco = session.query(Ecosystem).filter_by(jmeno=name).first()
+                eco = session.query(Ecosystem).filter_by(name=name).first()
                 if eco is None:
                     return None
-                package = pk.Package(eco.jmeno)
+                package = pk.Package(eco.name)
             elif table.title() == 'Packages':
                 pack = session.query(Packages).filter_by(name=name).first()
                 if pack is None:
@@ -99,7 +99,7 @@ class SqlalchemyDatabase(object):
         packages = []
         try:
             if master_table.title() == 'Ecosystem':
-                package = session.query(Ecosystem).filter_by(jmeno=name).first()
+                package = session.query(Ecosystem).filter_by(name=name).first()
                 if package is None:
                     return None
                 id = package.id
