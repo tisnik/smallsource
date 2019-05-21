@@ -31,7 +31,7 @@ class Versions(Base):
     version = sqla.Column(sqla.String)
     package = sqla.Column(sqla.String, sqla.ForeignKey('packages.name'))
 
-
+    
 class SqlalchemyDatabase(object):
     def __init__(self, backend):
         engine = sqla.create_engine(backend, echo=False)
@@ -43,6 +43,7 @@ class SqlalchemyDatabase(object):
         session = self.Session()
         package_in_db = None
         for package in args:
+
             try:
                 package_to_dict = package.to_dict()
                 if 'eco' in package_to_dict:
@@ -71,6 +72,7 @@ class SqlalchemyDatabase(object):
         session.commit()
 
     def restore_from_table(self, name, table):
+
         session = self.Session()
         try:
             if table.title() == 'Ecosystem':
@@ -97,6 +99,7 @@ class SqlalchemyDatabase(object):
     def restore_from_master(self, name, master_table):
         session = self.Session()
         packages = []
+
         try:
             if master_table.title() == 'Ecosystem':
                 package = session.query(Ecosystem).filter_by(jmeno=name).first()
