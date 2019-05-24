@@ -1,13 +1,13 @@
 class Package(object):
-    def __init__(self, jmeno):
-        self.jmeno = jmeno
+    def __init__(self, name):
+        self.name = name
 
     def __str__(self):
-        return 'Name: {}'.format(self.jmeno)
+        return 'Name: {}'.format(self.name)
 
     def to_dict(self):
         dictionary = dict()
-        dictionary["name"] = self.jmeno
+        dictionary["name"] = self.name
         return dictionary
 
     @staticmethod
