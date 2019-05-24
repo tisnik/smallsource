@@ -63,3 +63,6 @@ for i in database.restore_from_master('Second Generation', 'Ecosystem'):
 
 print(database.restore_from_master('Asas', 'Ecosystem'))
 print(database.restore_from_master('First Generation', 'Asas'))
+
+for i in database.restore_all('Packages'):
+    print(i)

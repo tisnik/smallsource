@@ -71,8 +71,27 @@ class SqlalchemyDatabase(object):
                 print(e)
         session.commit()
 
-    def restore_from_table(self, name, table):
+    def restore_all(self, table):
+        session = self.Session()
+        item = []
+        try:
+            if table.title() == 'Ecosystem':
+                items = session.query(Ecosystem).all()
+                for i in items:
+                    item.append(pk.Package(i.name))
+            elif table.title() == 'Packages':
+                items = session.query(Packages).all()
+                for i in items:
+                    item.append(pk.Description(i.name, i.description, i.repo, i.eco))
+            elif table.title() == 'Versions':
+                items = session.query(Versions).all()
+                for i in items:
+                    item.append(pk.Version(i.version, i.package))
+            return item
+        except Exception as e:
+            print(e)
 
+    def restore_from_table(self, name, table):
         session = self.Session()
         try:
             if table.title() == 'Ecosystem':
@@ -124,3 +143,7 @@ class SqlalchemyDatabase(object):
             return packages
         except Exception as e:
             print(e)
+
+def CreateDatebase():
+    database = SqlalchemyDatabase('sqlite:///dbfile.db')
+    return database
