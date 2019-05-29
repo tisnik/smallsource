@@ -19,6 +19,7 @@ database = db.SqlalchemyDatabase('sqlite:///dbfile.db')
 
 class Search(FlaskForm):
     name = wtf.StringField("Name", validators=[wtf.validators.DataRequired()])
+    table = wtf.RadioField("Table", choices=[('eco', 'Ecosystem'), ('pac', 'Package')])
 
 
 @app.route('/')
@@ -31,7 +32,11 @@ def search():
     add_form = Search()
     if add_form.validate_on_submit():
         link = add_form.name.data
-        return flask.redirect('/{}/pac'.format(link))
+        table = add_form.table.data
+        if table == 'eco':
+            return flask.redirect('/{}/pac'.format(link))
+        elif table == 'pac':
+            return flask.redirect('/{}/ver'.format(link))
     return render_template('Search.html', form=add_form)
 
 
