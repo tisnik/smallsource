@@ -1,6 +1,8 @@
 #!/bin/bash
 
-directories="datastore"
+IFS=$'\n'
+directories=$(cat directories.txt)
+
 pass=0
 fail=0
 
