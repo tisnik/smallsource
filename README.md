@@ -12,3 +12,6 @@ or [as vector drawing](doc/architecture.svg)
 
 ### QA-related tools
 please see documentation [here](qa/README.md)
+
+### Various tools used along the project
+please see documentation [here](tools/README.md)
