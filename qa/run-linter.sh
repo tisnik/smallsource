@@ -1,14 +1,18 @@
 #!/bin/bash
 
-directories="datastore"
+# Script to check all Python scripts for PEP-8 issues
+
+IFS=$'\n'
+directories=$(cat directories.txt)
+
 pass=0
 fail=0
 
 function prepare_venv() {
-    VIRTUALENV=$(which virtualenv)
+    VIRTUALENV="$(which virtualenv)"
     if [ $? -eq 1 ]; then
         # python36 which is in CentOS does not have virtualenv binary
-        VIRTUALENV=$(which virtualenv-3)
+        VIRTUALENV="$(which virtualenv-3)"
     fi
     if [ $? -eq 1 ]; then
         # still don't have virtual environment -> use python3.6 directly
