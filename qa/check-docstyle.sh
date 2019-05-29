@@ -2,7 +2,9 @@
 
 # Script to check all Python scripts for doc styling
 
-directories="datastore"
+IFS=$'\n'
+directories=$(cat directories.txt)
+
 pass=0
 fail=0
 
