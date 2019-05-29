@@ -7,9 +7,11 @@
 <body>
     <h1>Ecosystem</h1>
 
+    <a href="/">Main</a>, <a href="/search">Search</a> <br>
+
     <ul>
         {% for i in list %}
-        <li>{{i}}</li>
+        <li> <a href='{{ i.link }}'> {{ i.name }} </a> </li>
         {% endfor %}
     </ul>
 </body>

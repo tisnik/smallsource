@@ -17,6 +17,14 @@ app.config["SECRET_KEY"] = SECRET_KEY
 database = db.SqlalchemyDatabase('sqlite:///dbfile.db')
 
 
+def MakeUrl(url):
+    new_url = url.split("_")
+    new_url = " ".join(new_url)
+    new_url = new_url.title()
+    return new_url
+
+
+
 class Search(FlaskForm):
     name = wtf.StringField("Name", validators=[wtf.validators.DataRequired()])
     table = wtf.RadioField("Table", choices=[('eco', 'Ecosystem'), ('pac', 'Package')])
@@ -34,29 +42,34 @@ def search():
         link = add_form.name.data
         table = add_form.table.data
         if table == 'eco':
-            return flask.redirect('/{}/pac'.format(link))
+            return flask.redirect('/{}'.format(link))
         elif table == 'pac':
-            return flask.redirect('/{}/ver'.format(link))
+            eco = database.restore_from_table(link, 'Packages')
+            url = MakeUrl(eco.package.name)
+            return flask.redirect('/{}/{}'.format(url, link))
     return render_template('Search.html', form=add_form)
 
 
 @app.route('/eco')
 def ecosystem():
-    list = database.restore_all('Ecosystem')
-    return render_template('Ecosystem.html', list=list)
+    restored = database.restore_all('Ecosystem')
+    for i in restored:
+        url = MakeUrl(i.name)
+        i.link = url
+    return render_template('Ecosystem.html', list=restored)
 
 
-@app.route('/<eco>/pac', methods=('GET', 'POST'))
+@app.route('/<eco>')
 def packages(eco):
-    link = eco.split("_")
-    link = " ".join(link)
-    link = link.title()
-    packages = database.restore_from_master(link, 'Ecosystem')
-    return render_template('Packages.html', name=link, list=packages)
+    url = MakeUrl(eco)
+    packages = database.restore_from_master(url, 'Ecosystem')
+    for i in packages:
+        i.url = i.name.title()
+    return render_template('Packages.html', name=url, list=packages)
 
 
-@app.route('/<pac>/ver')
-def versions(pac):
+@app.route('/<eco>/<pac>')
+def versions(eco, pac):
     package = pac.title()
     versions = database.restore_from_master(package, 'Packages')
     return render_template('Versions.html', name=package, list=versions)
