@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Versions</title>
+</head>
+<body>
+    <h1>Versions of {{name}}</h1>
+
+    <a href="/">Main</a>, <a href="/search">Search</a>, <a href="/{{eco}}">Eco</a><br>
+
+    <ul>
+        {% for i in list %}
+        <li>{{i}}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

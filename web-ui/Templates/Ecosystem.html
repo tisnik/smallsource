@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ecosystem</title>
+</head>
+<body>
+    <h1>Ecosystem</h1>
+
+    <a href="/">Main</a>, <a href="/search">Search</a> <br>
+
+    <ul>
+        {% for i in list %}
+        <li> <a href='{{ i.link }}'> {{ i.name }} </a> </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

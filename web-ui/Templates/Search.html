@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search</title>
+</head>
+<body>
+
+<a href="/">Main</a> <br>
+
+<form method="POST">
+    <P>
+        {{ form.csrf_token }}
+        {{ form.name.label }} {{ form.name() }}<br>
+    </P>
+    <P>
+        <input type="submit" value="Submit">
+    </P>
+</form>
+
+</body>
+</html>
