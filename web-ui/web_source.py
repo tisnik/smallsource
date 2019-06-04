@@ -15,6 +15,7 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = SECRET_KEY
 
 database = db.SqlalchemyDatabase('sqlite:///dbfile.db')
+session = database.Session()
 
 
 def MakeUrl(url):
@@ -24,10 +25,8 @@ def MakeUrl(url):
     return new_url
 
 
-
 class Search(FlaskForm):
-    name = wtf.StringField("Name", validators=[wtf.validators.DataRequired()])
-    table = wtf.RadioField("Table", choices=[('eco', 'Ecosystem'), ('pac', 'Package')])
+    name = wtf.StringField('Name', validators=[wtf.validators.DataRequired()])
 
 
 @app.route('/')
@@ -35,19 +34,21 @@ def main():
     return render_template('Main.html')
 
 
-@app.route('/search', methods=('GET', "POST"))
-def search():
+@app.route('/search', methods=('GET', 'POST'))
+def ssearch():
     add_form = Search()
     if add_form.validate_on_submit():
-        link = add_form.name.data
-        table = add_form.table.data
-        if table == 'eco':
-            return flask.redirect('/{}'.format(link))
-        elif table == 'pac':
-            eco = database.restore_from_table(link, 'Packages')
+        name = add_form.name.data
+        if database.restore_from_table(name, 'Ecosystem') is not None:
+            return flask.redirect('/{}'.format(name))
+        elif database.restore_from_table(name, 'Packages') is not None:
+            eco = database.restore_from_table(name, 'Packages')
             url = MakeUrl(eco.package.name)
-            return flask.redirect('/{}/{}'.format(url, link))
+            return flask.redirect('/{}/{}'.format(url, name))
+        else:
+            return render_template('Error.html')
     return render_template('Search.html', form=add_form)
+
 
 
 @app.route('/eco')
@@ -72,4 +73,4 @@ def packages(eco):
 def versions(eco, pac):
     package = pac.title()
     versions = database.restore_from_master(package, 'Packages')
-    return render_template('Versions.html', name=package, list=versions)
+    return render_template('Versions.html', name=package, list=versions, eco=eco)
