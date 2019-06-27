@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 workdir=`pwd`/../workdir
 
 abs_workdir=`readlink -f $workdir`
