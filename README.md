@@ -1,6 +1,19 @@
 # smallsource
 Source code analytics platform
 
+## Installation
+
+The system requires several tools to be installed:
+* redis
+* rq (Redis Queue)
+* sqlite3
+
+### Redis
+
+### rq (Redis Queue)
+
+### sqlite3
+
 ## Other documents
 
 ### System architecture
