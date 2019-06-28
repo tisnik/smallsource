@@ -18,5 +18,4 @@ def select_all_ecosystems(connection):
     cursor.execute("SELECT * FROM ecosystem")
     rows = cursor.fetchall()
  
-    for row in rows:
-        print(row)
+    return rows
