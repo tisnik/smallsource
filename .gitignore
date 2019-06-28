@@ -109,3 +109,6 @@ venv.bak/
 # Redis data
 appendonly.aof
 dump.rdb
+
+# SQLite data
+smallsource.db
