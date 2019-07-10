@@ -3,7 +3,15 @@
 # Script to check all Python scripts for PEP-8 issues
 
 IFS=$'\n'
-directories=$(cat directories.txt)
+
+# get the path to this script, regardless of from which directory it is called
+SCRIPT_DIR="$( cd "$( dirname "$0" )" && pwd )"
+
+# list of directories with sources to check
+directories=$(cat ${SCRIPT_DIR}/directories.txt)
+
+# go to the repo base directory
+pushd "${SCRIPT_DIR}/.."
 
 pass=0
 fail=0
@@ -22,8 +30,6 @@ function prepare_venv() {
     fi
 }
 
-SCRIPT_DIR="$( cd "$( dirname "$0" )" && pwd )"
-pushd "${SCRIPT_DIR}/.."
 
 
 echo "----------------------------------------------------"
