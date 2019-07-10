@@ -1,7 +1,17 @@
 #!/bin/bash
 
+# Script to check all Python scripts for common errors
+
 IFS=$'\n'
-directories=$(cat directories.txt)
+
+# get the path to this script, regardless of from which directory it is called
+SCRIPT_DIR="$( cd "$( dirname "$0" )" && pwd )"
+
+# list of directories with sources to check
+directories=$(cat ${SCRIPT_DIR}/directories.txt)
+
+# go to the repo base directory
+pushd "${SCRIPT_DIR}/.."
 
 pass=0
 fail=0
@@ -41,11 +51,6 @@ function check_files() {
     done
 }
 
-[ "$NOVENV" == "1" ] || prepare_venv || exit 1
-
-SCRIPT_DIR="$( cd "$( dirname "$0" )" && pwd )"
-pushd "${SCRIPT_DIR}/.."
-
 
 echo "----------------------------------------------------"
 echo "Checking source files for common errors in following"
@@ -53,6 +58,8 @@ echo "directories:"
 echo "$directories"
 echo "----------------------------------------------------"
 echo
+
+[ "$NOVENV" == "1" ] || prepare_venv || exit 1
 
 # checks for the whole directories
 for directory in $directories
