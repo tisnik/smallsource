@@ -9,12 +9,10 @@ def do_star_count(repo):
     try:
         repo = g.get_repo(repo)
         print(repo.stargazers_count)
-        print(repo)
     except Exception as error:
         print(f"Error : {error}")
         exit(1)
 
 # ------------------------------------------------------------- #
-
 
 
