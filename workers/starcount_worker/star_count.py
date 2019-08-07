@@ -14,7 +14,7 @@ def do_star_count(repo):
         exit(1)
 
 # for testing
-do_star_count("electron/electrasdon")
+#do_star_count("electron/electrasdon")
 # ------------------------------------------------------------- #
 
 
