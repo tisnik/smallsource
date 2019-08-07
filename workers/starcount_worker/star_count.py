@@ -1,5 +1,6 @@
 from github import Github
 
+
 # ---------------------------- MAIN --------------------------- #
 # worker is called by this function
 # function takes repository name ['user/repository'] and prints out star count of given repository
