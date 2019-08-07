@@ -13,8 +13,6 @@ def do_star_count(repo):
         print(f"Error : {error}")
         exit(1)
 
-# for testing
-#do_star_count("electron/electrasdon")
 # ------------------------------------------------------------- #
 
 

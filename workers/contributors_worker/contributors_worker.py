@@ -21,23 +21,28 @@ def print_links(response):
     for x in links:
         print(x)
         for y in links[x]:
-           print(y, ':', links[x][y])
+            print(y, ':', links[x][y])
 # -------------------------------------------- #
+
 
 # recursively calls functions and itself to print out info from all pages
 def print_page(prev_resp,session):
     if "next" in prev_resp.links:
         curr_resp = session.get(prev_resp.links["next"]['url'])
-        print_links(curr_resp)
+        # ------- FOR TESTING ONLY ! ------- #
+        # print_links(curr_resp)
+        # ---------------------------------- #
         get_data(curr_resp)
         print_page(curr_resp,session)
     else:
         return
 
+
 # main function for printing all info
 def print_all_pages(response,session):
     get_data(response)
     print_page(response, session)
+
 
 # ---------------------------- MAIN ----------------------------#
 # worker is called by this function
@@ -55,6 +60,4 @@ def do_contributors(repo):
     else:
         raise Exception(f"Response status code : {response.status_code}")
 
-# for testing
-# do_contributors("electron/electron")
 # --------------------------------------------------------------#

@@ -7,11 +7,9 @@ from .config import config
 
 from workers import __file__ as base_path
 
-# Base directory for all cloned repositories is "[main module root directory]/repos/".
-#clone_root_dir = path.join(dirname(base_path), "repos")
+# Base directory for all cloned repositories is /tmp/smallsource/repos
+clone_dir = "/tmp/smallsource/repos"
 
-#temporary path for testing
-clone_root_dir = path.join("/home/samuel_RH/RH_projects/test_smallsource","repos")
 
 
 # TODO add info about repos
@@ -22,7 +20,7 @@ class RepoInfo:  # TODO: Add docstrings.
         self.user = user
         self.name = name
 
-        self.dir = path.join(clone_root_dir, server, user, name)
+        self.dir = path.join(clone_dir, server, user, name)
         self.hash = None
 
 
@@ -39,7 +37,7 @@ def _clone_repo(repo_url):
     """
 
     # Make sure the base clone dir exists.
-    makedirs(clone_root_dir, exist_ok=True)
+    makedirs(clone_dir, exist_ok=True)
 
     # NOTE: Only standard GitHub and GitLab are currently properly supported.
     match = re.fullmatch(
@@ -96,7 +94,7 @@ def get_repo_or_dir(repo):
     # It is more confusing than it is practical now.
 
     # Path of a previously cloned repository: "[server]/[user]/[repo name]"
-    repo_dir_by_name = path.join(clone_root_dir, repo)
+    repo_dir_by_name = path.join(clone_dir, repo)
     if re.fullmatch(r"^[\w\-]+/[\w\-]+/[\w\-]+$", repo) and isdir(repo_dir_by_name):
         return repo_dir_by_name
 
@@ -134,7 +132,4 @@ def do_repo_cloner(repo):
     path_to_repo = get_repo_or_dir(repo)
     print(path_to_repo)
 
-
-# for testing
-# do_repo_cloner("electron/electron")
 # ------------------------------------------------------------- #

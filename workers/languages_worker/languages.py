@@ -29,7 +29,4 @@ def do_languages(repo):
     else:
         raise Exception(f"Response status code : {response.status_code}")
 
-
-# for testing
-# do_languages("electron/electron")
 # ------------------------------------------------------------- #
