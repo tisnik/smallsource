@@ -112,3 +112,4 @@ dump.rdb
 
 # SQLite data
 smallsource.db
+/message-broker/RedisJSON/
