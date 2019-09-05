@@ -1,8 +1,10 @@
 from github import Github
+import os
+
 
 # ----------- Authentication ---------- #
 # input authentication token string
-# token = 'ec000918e9b6f3685895d45ed1d682f180e6f45d'  # TODO: DELETE THIS LATER !!!!
+token = 'ec000918e9b6f3685895d45ed1d682f180e6f45d'  # TODO: DELETE THIS LATER !!!!
 # token = 'token'
 # ------------------------------------- #
 try:
@@ -20,13 +22,18 @@ def do_org(repo):
     try:
         repo = g.get_repo(repo)
         org = repo.organization
-        print(f"Name : {org.name}")
-        print(f"Email : {org.email}")
-        print(f"Link : {org.html_url}")
-        print(f"Company : {org.company}")
+        if org is None:
+            print("No organization.")
+        else:
+            print(f"Name : {org.name}")
+            print(f"Email : {org.email}")
+            print(f"Link : {org.html_url}")
+            print(f"Company : {org.company}")
     except Exception as error:
         print(f"Error : {error}")
         exit(1)
 
-do_org("electron/electron")
+
+repo = os.getenv('REPOSITORY')
+do_org(repo)
 # ------------------------------------------------------------- #

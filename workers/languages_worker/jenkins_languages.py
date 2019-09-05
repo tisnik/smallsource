@@ -1,9 +1,9 @@
 from github import Github
-
+import os
 
 # ----------- Authentication ---------- #
 # input authentication token string
-#token = 'ec000918e9b6f3685895d45ed1d682f180e6f45d'  # TODO: DELETE THIS LATER !!!!
+token = 'ec000918e9b6f3685895d45ed1d682f180e6f45d'  # TODO: DELETE THIS LATER !!!!
 # token = 'token'
 # ------------------------------------- #
 try:
@@ -25,5 +25,6 @@ def do_languages(repo):
         exit(1)
 
 
-do_languages("tisnik/smallsource")
+repo = os.getenv('REPOSITORY')
+do_languages(repo)
 # ------------------------------------------------------------- #
