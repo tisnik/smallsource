@@ -1,11 +1,12 @@
 import re
+import os
 from os import path, makedirs
 from os.path import isdir, dirname
 from git import Repo, InvalidGitRepositoryError, GitCommandError
-from .errors.UserInputError import UserInputError
-from .config import config
+from errors.UserInputError import UserInputError
+from config import config
 
-from workers import __file__ as base_path
+#from workers import __file__ as base_path
 
 # Base directory for all cloned repositories is /tmp/smallsource/repos
 clone_dir = "/tmp/smallsource/repos"
@@ -123,8 +124,6 @@ def get_repo_info(repo):  # TODO: Add docstring.
     return _clone_github_short(repo) or _clone_repo(repo)
 
 
-
-
 # ---------------------- Main function ------------------------ #
 
 # function to call as worker
@@ -132,4 +131,7 @@ def do_repo_cloner(repo):
     path_to_repo = get_repo_or_dir(repo)
     print(path_to_repo)
 
+
+repo = os.getenv('REPOSITORY')
+do_repo_cloner(repo)
 # ------------------------------------------------------------- #
