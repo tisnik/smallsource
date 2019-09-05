@@ -1,5 +1,9 @@
 from github import Github
 import os
+import sys
+
+sys.path.append("..")  # Adds higher directory to python modules path.
+from message_broker.data_redis import make_name, store
 
 
 # ----------- Authentication ---------- #
@@ -7,33 +11,42 @@ import os
 token = 'ec000918e9b6f3685895d45ed1d682f180e6f45d'  # TODO: DELETE THIS LATER !!!!
 # token = 'token'
 # ------------------------------------- #
-try:
-    g = Github(login_or_token=token, per_page=100)
-    print("Running with authentication")
-except:
-    print("Running without authentication")
-    g = Github(per_page=100)
 
 
-# ---------------------------- MAIN --------------------------- #
-# worker is called by this function
-# function takes repository name ['user/repository'] and prints out info about organization that repository belong to
-def do_org(repo):
+def make_output(org):
+    if org is None:
+        output = {
+            "organization": "No organization"
+        }
+    else:
+        output = {
+            "Name": org.name,
+            "Email": org.email,
+            "Link": org.html_url,
+            "Company": org.company
+        }
+    return output
+
+
+def do_org(repo_name, time):
     try:
-        repo = g.get_repo(repo)
+        repo = g.get_repo(repo_name)
         org = repo.organization
-        if org is None:
-            print("No organization.")
-        else:
-            print(f"Name : {org.name}")
-            print(f"Email : {org.email}")
-            print(f"Link : {org.html_url}")
-            print(f"Company : {org.company}")
+        store(make_name(repo_name, time, "organization"), make_output(org))
     except Exception as error:
         print(f"Error : {error}")
         exit(1)
 
 
-repo = os.getenv('REPOSITORY')
-do_org(repo)
-# ------------------------------------------------------------- #
+if __name__ == '__main__':
+    try:
+        g = Github(login_or_token=token, per_page=100)
+        print("Running with authentication")
+    except:
+        print("Running without authentication")
+        g = Github(per_page=100)
+
+    repo = os.getenv('REPOSITORY')
+    time = os.getenv('TIME_OF_BUILD')
+    do_org(repo, time)
+
