@@ -1,13 +1,18 @@
 from github import Github
+import os
 
 
 # ----------- Authentication ---------- #
-# input authentication token string instead of None
-#token = 'ec000918e9b6f3685895d45ed1d682f180e6f45d'   # TODO: DELETE THIS LATER !!!!
-token = None
+# input authentication token string
+token = 'ec000918e9b6f3685895d45ed1d682f180e6f45d'  # TODO: DELETE THIS LATER !!!!
+# token = 'token'
 # ------------------------------------- #
-
-g = Github(login_or_token=token, per_page=100)
+try:
+    g = Github(login_or_token=token, per_page=100)
+    print("Running with authentication")
+except:
+    print("Running without authentication")
+    g = Github(per_page=100)
 
 
 # ---------------------------- MAIN ----------------------------#
@@ -26,5 +31,7 @@ def do_contributors(repo):
         print(f"Error : {e}")
         exit(1)
 
-do_contributors("PyGithub/PyGithub")
+
+repo = os.getenv('REPOSITORY')
+do_contributors(repo)
 # --------------------------------------------------------------#
