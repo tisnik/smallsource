@@ -25,13 +25,13 @@ def make_output(starcount):
     return output
 
 
-def do_star_count(repo_name, time):
+def do_star_count(repo_name, time, ip_address):
     """ Get star count of repository store it into redis as Json string """
     try:
         repository = g.get_repo(repo_name)
         starcount = repository.stargazers_count
         # make_name function composes ID for Json to be stored in redis
-        store(make_name(repo_name,time,"starcount"),make_output(starcount))
+        store(make_name(repo_name,time,"starcount",ip_address),make_output(starcount))
     except Exception as error:
         print(f"Error : {error}")
         exit(1)
@@ -47,7 +47,7 @@ if __name__ == '__main__':
 
     repo = os.getenv('REPOSITORY')
     time = os.getenv('TIME_OF_BUILD')
-    do_star_count("tisnik/smallsource","sometime")
-
+    ip_address = os.getenv('IP_ADDRESS')
+    do_star_count(repo, time, ip_address)
 
 

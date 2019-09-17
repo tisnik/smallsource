@@ -33,13 +33,13 @@ def make_output(org):
     return output
 
 
-def do_org(repo_name, time):
+def do_org(repo_name, time, ip_address):
     """ Get organization data and store them into redis as Json string """
     try:
         repo = g.get_repo(repo_name)
         org = repo.organization
         # make_name function composes ID for Json to be stored in redis
-        store(make_name(repo_name, time, "organization"), make_output(org))
+        store(make_name(repo_name, time, "organization", ip_address), make_output(org))
     except Exception as error:
         print(f"Error : {error}")
         exit(1)
@@ -55,5 +55,5 @@ if __name__ == '__main__':
 
     repo = os.getenv('REPOSITORY')
     time = os.getenv('TIME_OF_BUILD')
-    do_org(repo, time)
-
+    ip_address = os.getenv('IP_ADDRESS')
+    do_org(repo, time, ip_address)

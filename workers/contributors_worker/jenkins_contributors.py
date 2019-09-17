@@ -31,13 +31,13 @@ def make_output(con):
     return output
 
 
-def do_contributors(repo_name, time):
+def do_contributors(repo_name, time, ip_address):
     """ Get contributors data and store them into redis as Json string """
     try:
         repo = g.get_repo(repo_name)
         con = repo.get_contributors()
         # make_name function composes ID for Json to be stored in redis
-        store(make_name(repo_name, time, "contributors"), make_output(con))
+        store(make_name(repo_name, time, "contributors", ip_address), make_output(con))
     except Exception as e:
         print(f"Error : {e}")
         exit(1)
@@ -53,4 +53,6 @@ if __name__ == '__main__':
 
     repo = os.getenv('REPOSITORY')
     time = os.getenv('TIME_OF_BUILD')
-    do_contributors(repo, time)
+    ip_address = os.getenv('IP_ADDRESS')
+    do_contributors(repo, time, ip_address)
+

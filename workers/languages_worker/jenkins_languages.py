@@ -17,12 +17,12 @@ token = 'ec000918e9b6f3685895d45ed1d682f180e6f45d'  # TODO: DELETE THIS LATER !!
 # ------------------------------------- #
 
 
-def do_languages(repo_name, time):
+def do_languages(repo_name, time, ip_address):
     """ Get languages data and store them into redis as Json string """
     try:
         repo = g.get_repo(repo_name)
         # make_name function composes ID for Json to be stored in redis
-        store(make_name(repo_name, time, "languages"), repo.get_languages())
+        store(make_name(repo_name, time, "languages", ip_address), repo.get_languages())
     except Exception as e:
         print(f"Error : {e}")
         exit(1)
@@ -38,6 +38,5 @@ if __name__ == '__main__':
 
     repo = os.getenv('REPOSITORY')
     time = os.getenv('TIME_OF_BUILD')
-    do_languages(repo, time)
-
-
+    ip_address = os.getenv('IP_ADDRESS')
+    do_languages(repo, time, ip_address)
