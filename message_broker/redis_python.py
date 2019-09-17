@@ -3,9 +3,11 @@ from rq import Queue
 import os
 from workers.workers_controller.controller import call_workers
 
+
 controller_queue = Queue(connection=Redis())
 
 # ----------------- ENVIRONMENT VARIABLES ------------------- #
+# Example :
 # list_of_workers = ["star_count","languages","contributors","repo_fetcher"]
 # repo = "tisnik/smallsource"
 # ----------------------------------------------------------- #
@@ -30,5 +32,3 @@ else:
 Run workers by "rq worker" plus names of queues 
 example :  rq worker repo_fetcher star_count languages contributors
 '''
-
-
