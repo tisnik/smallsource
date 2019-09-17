@@ -14,12 +14,9 @@ def store(name,data):
     print(json.dumps(data))
 
 
-
 def retrieve(name):
     reply = json.loads(r.execute_command('JSON.GET', name))
     print(reply)
-
-
 
 
 
