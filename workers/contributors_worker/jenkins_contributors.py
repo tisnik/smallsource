@@ -37,7 +37,7 @@ def do_contributors(repo_name, time, ip_address):
         repo = g.get_repo(repo_name)
         con = repo.get_contributors()
         # make_name function composes ID for Json to be stored in redis
-        store(make_name(repo_name, time, "contributors", ip_address), make_output(con))
+        store(make_name(repo_name,"contributors", time, ip_address), make_output(con))
     except Exception as e:
         print(f"Error : {e}")
         exit(1)

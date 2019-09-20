@@ -39,7 +39,7 @@ def do_org(repo_name, time, ip_address):
         repo = g.get_repo(repo_name)
         org = repo.organization
         # make_name function composes ID for Json to be stored in redis
-        store(make_name(repo_name, time, "organization", ip_address), make_output(org))
+        store(make_name(repo_name,"organization", time, ip_address), make_output(org))
     except Exception as error:
         print(f"Error : {error}")
         exit(1)

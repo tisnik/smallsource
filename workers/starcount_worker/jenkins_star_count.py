@@ -31,7 +31,7 @@ def do_star_count(repo_name, time, ip_address):
         repository = g.get_repo(repo_name)
         starcount = repository.stargazers_count
         # make_name function composes ID for Json to be stored in redis
-        store(make_name(repo_name,time,"starcount",ip_address),make_output(starcount))
+        store(make_name(repo_name, "starcount", time, ip_address),make_output(starcount))
     except Exception as error:
         print(f"Error : {error}")
         exit(1)
