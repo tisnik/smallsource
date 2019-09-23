@@ -12,7 +12,7 @@ from data_redis import make_name,store
 
 # ----------- Authentication ---------- #
 # input authentication token string
-token = 'ec000918e9b6f3685895d45ed1d682f180e6f45d'  # TODO: DELETE THIS LATER !!!!
+
 # token = 'token'
 # ------------------------------------- #
 
