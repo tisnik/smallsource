@@ -8,10 +8,14 @@ The system requires several tools to be installed:
 * rq (Redis Queue)
 * sqlite3
 
+see requirements [here](requirements.txt).
+
 ### Redis
+Redis database is used to store outputs of workers in Json format. We use Redis module https://github.com/RedisJSON/RedisJSON . 
 
 ### rq (Redis Queue)
-
+Run workers by "rq worker" plus names of queues.
+Example :  rq worker repo_fetcher star_count languages contributors
 ### sqlite3
 
 ## Other documents
