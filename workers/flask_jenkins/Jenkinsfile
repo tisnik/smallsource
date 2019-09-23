@@ -1,0 +1,34 @@
+
+workers = workers_list.split(",")
+parallel first_branch:{
+if ('starcount' in workers){
+    stage ('Starcount') {
+        build job: 'starcount', parameters: [[$class: 'StringParameterValue', name: 'REPOSITORY', value: repo],[$class: 'StringParameterValue', name: 'TIME_OF_BUILD', value: time_of_trigger],[$class: 'StringParameterValue', name: 'IP_ADDRESS', value: ip_address]]
+    }
+}
+}, second_branch:{
+if ('organization' in workers){
+    stage ('Organization') {
+        build job: 'organization', parameters: [[$class: 'StringParameterValue', name: 'REPOSITORY', value: repo],[$class: 'StringParameterValue', name: 'TIME_OF_BUILD', value: time_of_trigger],[$class: 'StringParameterValue', name: 'IP_ADDRESS', value: ip_address]]
+    }
+}
+},third_branch:{
+if ('contributors' in workers){
+    stage ('Contributors') {
+        build job: 'contributors', parameters: [[$class: 'StringParameterValue', name: 'REPOSITORY', value: repo],[$class: 'StringParameterValue', name: 'TIME_OF_BUILD', value: time_of_trigger],[$class: 'StringParameterValue', name: 'IP_ADDRESS', value: ip_address]]
+    }
+}
+},forth_branch: {
+if ('languages' in workers){
+    stage ('Languages') {
+        build job: 'languages', parameters: [[$class: 'StringParameterValue', name: 'REPOSITORY', value: repo],[$class: 'StringParameterValue', name: 'TIME_OF_BUILD', value: time_of_trigger],[$class: 'StringParameterValue', name: 'IP_ADDRESS', value: ip_address]]
+    }
+}
+}, fifth_branch: {
+if ('fetcher' in workers){
+    stage ('Fetcher') {
+        build job: 'fetcher', parameters: [[$class: 'StringParameterValue', name: 'REPOSITORY', value: repo],[$class: 'StringParameterValue', name: 'TIME_OF_BUILD', value: time_of_trigger],[$class: 'StringParameterValue', name: 'IP_ADDRESS', value: ip_address]]
+    }
+}
+},
+failFast: false
