@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+  
+{% block content %}
+
+<script src="{{ url_for('static',filename='my_app.js') }}"></script>
+
+<header class="masthead text-center text-white">
+    <div class="masthead-content">
+      <div class="container mt-lg-auto">
+        <h2 class="masthead-subheading mb-lg-auto">Look at all these nice results </h2>
+      </div>
+
+        <div  class="my_data row mt-5">
+
+        </div>
+
+    </div>
+    <div class="bg-circle-1 bg-circle"></div>
+    <div class="bg-circle-2 bg-circle"></div>
+    <div class="bg-circle-3 bg-circle"></div>
+    <div class="bg-circle-4 bg-circle"></div>
+  </header>
+
+
+
+
+{% endblock content %}

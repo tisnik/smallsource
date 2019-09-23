@@ -1,0 +1,19 @@
+{% extends "/worker_templates/table.html" %}
+{% block table  %}
+<table style="width:70%">
+  <tr>
+      <th>#</th>
+    <th>Login</th>
+    <th>Profile</th>
+    <th>Contributions</th>
+  </tr>
+    {% for i in data %}
+  <tr>
+      <td>{{i}}</td>
+    <td>{{ data[i]['login'] }}</td>
+    <td>{{ data[i]['html_url'] }}</td>
+    <td>{{ data[i]['contributions'] }}</td>
+  </tr>
+    {% endfor %}
+</table>
+{% endblock table %}

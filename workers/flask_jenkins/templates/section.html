@@ -1,0 +1,14 @@
+
+{% for worker in workers %}
+<div  class="col-lg-4 mb-2 mt-2">
+    <h2>{{ worker }}</h2>
+    {% if output[worker.lower()] == None %}
+    <p>  Fetching results ... </p>
+    {% else %}
+    {% include "worker_templates/" + worker.lower() + ".html" %}
+    {% endif %}
+</div>
+{% endfor %}
+
+
+<!-- TODO : exception for non existing template
