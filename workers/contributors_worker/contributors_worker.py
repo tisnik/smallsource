@@ -59,5 +59,5 @@ def do_contributors(repo):
         print_all_pages(response, gh_session)
     else:
         raise Exception(f"Response status code : {response.status_code}")
-
+do_contributors("PyGithub/PyGithub")
 # --------------------------------------------------------------#

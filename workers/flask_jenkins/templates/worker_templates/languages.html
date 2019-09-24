@@ -1,0 +1,10 @@
+<div>
+{% for i in output[worker.lower()] %}
+    {% if loop.index < 6 %}
+<p><strong>{{ i }} :</strong> {{ output[worker.lower()][i] }} bytes. </p>
+    {% endif %}
+{% endfor %}
+     {% if output[worker.lower()]|length > 5 %}
+    <a class="text-white" href="{{ url_for('table',name='languages') }}"><h5>View all</h5></a>
+    {% endif %}
+</div>

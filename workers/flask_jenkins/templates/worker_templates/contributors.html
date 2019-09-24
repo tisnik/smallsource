@@ -1,0 +1,15 @@
+<div>
+{% for i in range(3) %}
+<p><strong> Login :</strong> {{ output[worker.lower()][i|string]['login'] }} <br>
+    <strong> Profile :</strong> {{ output[worker.lower()][i|string]['html_url'] }} <br>
+    <strong> Contributions :</strong> {{ output[worker.lower()][i|string]['contributions'] }} <br></p>
+{% endfor %}
+    {% if output[worker.lower()]|length > 3 %}
+    <a class="text-white" href="{{ url_for('table',name='contributors'  ) }}"><h5>View all</h5></a>
+    {% endif %}
+</div>
+
+
+
+
+<!-- TODO:  urobit len pre prvych 10 contributors a potom link na stranku s tabulkou vsetkych contributors -->

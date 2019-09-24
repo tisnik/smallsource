@@ -1,0 +1,8 @@
+flask
+flask_wtf
+jenkinsapi
+PyGithub
+python-jenkins
+jinja2
+redis
+rq

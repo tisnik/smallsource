@@ -2,6 +2,8 @@
 from redis import Redis
 from rq import Queue
 
+""" This script is for use of rq, as of now we are using Jenkins pipelines so this script is not being used. """
+
 #imports for workers
 
 from workers.starcount_worker.star_count import do_star_count

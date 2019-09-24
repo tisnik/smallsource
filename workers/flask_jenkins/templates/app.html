@@ -1,0 +1,92 @@
+{% extends "layout.html" %}
+  
+{% block content %}
+  
+<header class="masthead text-center text-white">
+    <div class="masthead-content">
+      <div class="container">
+
+        <h2 class="masthead-subheading mb-5">Input your repository url here </h2>
+        <form method="POST" action="" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+
+            <div class="form-group">
+                <div class="row">
+                     <div class="col-lg-6 mx-auto">
+                     {% if success == False%}
+                         {% if 'EmptyRepo' in errors %}
+
+                                <div class=" alert alert-danger alert-dismissible">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                    <strong>No repository !</strong> Please input repository name or url.
+                                </div>
+
+                         {% endif %}
+                        <div>
+                            <small id="url_help" class="form-text text-white">Github repository full URL or in format [ username/repository ]</small>
+                            <input type="text" class="form-control text-center" name="repo_url" value="{{ value }}" placeholder="Enter here">
+                        </div>
+                     {% else %}
+                         <div>
+                          <input type="text" readonly class="form-control text-center" value="{{ value }}">
+                        </div>
+                     {% endif %}
+                     </div>
+                </div>
+
+
+
+                <div class="row" >
+                    <div class="col-lg-6 mx-auto">
+                        {% if success == False%}
+                        <label class="text-white mb-3 mt-3 lead"><strong>Choose workers !</strong></label>
+                         {% endif %}
+                        <!-- Multiselect dropdown -->
+                        {% if 'EmptySelect' in errors %}
+                                 <div class="alert alert-danger alert-dismissible">
+                                  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                  <strong>No worker selected !</strong> Please choose one or multiple workers.
+                                </div>
+                        {% endif %}
+                        {% if success %}
+                                 <div class="mt-1 alert alert-success alert-dismissible">
+                                      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                      <strong>Success !</strong> It has begun!
+                                 </div>
+                        {% endif %}
+                        {% if success == False%}
+                        <select id="mymultiselect" name="mymultiselect" multiple data-style="bg-white rounded-pill px-4 py-3 shadow-sm " class="selectpicker w-100">
+                            <option>Starcount</option>
+                            <option>Languages</option>
+                            <option>Contributors</option>
+                            <option>Organization</option>
+                        </select><!-- End -->
+                         {% endif %}
+                    </div>
+                </div>
+            </div>
+
+              {% if success == False %}
+              <div class="form-group">
+                  {{ form.submit(class="btn btn-primary btn-xl rounded-pill mb-1") }}
+            </div>
+             {% endif %}
+             {% if success %}
+            <div>
+                <a href="{{ url_for('upload_success') }}"  class="btn btn-primary btn-xl rounded-pill mt-5">View results !</a>
+            </div>
+            {% endif %}
+
+        </form>
+      </div>
+    </div>
+    <div class="bg-circle-1 bg-circle"></div>
+    <div class="bg-circle-2 bg-circle"></div>
+    <div class="bg-circle-3 bg-circle"></div>
+    <div class="bg-circle-4 bg-circle"></div>
+  </header>
+
+ 
+  
+
+{% endblock content %}

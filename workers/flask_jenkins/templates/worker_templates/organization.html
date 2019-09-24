@@ -1,0 +1,11 @@
+<div>
+{% if 'organization' in output[worker.lower()] %}
+<p>{{ output[worker.lower()]['organization'] }}</p>
+{% else %}
+{% for i in output[worker.lower()] %}
+{% if output[worker.lower()][i] != None %}
+<p><strong>{{ i }} :</strong> {{ output[worker.lower()][i] }} </p>
+{% endif %}
+{% endfor %}
+{% endif %}
+</div>

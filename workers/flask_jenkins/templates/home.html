@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+{% block content %}
+  <header class="masthead text-center text-white">
+    <div class="masthead-content">
+      <div class="container">
+        <h1 class="masthead-heading mb-0">Smallsource</h1>
+        <h2 class="masthead-subheading mb-0">Test your Git repository!</h2>
+        <a href="{{ url_for('application') }}" class="btn btn-primary btn-xl rounded-pill mt-5"> Begin !</a>
+      </div>
+    </div>
+    <div class="bg-circle-1 bg-circle"></div>
+    <div class="bg-circle-2 bg-circle"></div>
+    <div class="bg-circle-3 bg-circle"></div>
+    <div class="bg-circle-4 bg-circle"></div>
+  </header>
+
+  <section>
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6 order-lg-2">
+          <div class="p-5">
+            <a href="https://github.com/">
+              <img class="img-fluid " src="https://smedia2.intoday.in/btmt/images/stories/github_660_060518055111.jpg" alt="Github Image">
+            </a>
+          </div>
+        </div>
+        <div class="col-lg-6 order-lg-1">
+          <div class="p-5">
+            <h2 class="display-4">About</h2>
+            <p>Analysis on Github repositories. </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock content %}
+
+  
+
